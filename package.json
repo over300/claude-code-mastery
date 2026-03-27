@@ -1,0 +1,21 @@
+{
+  "name": "developer-resume",
+  "version": "1.0.0",
+  "description": "개발자 웹 이력서 포트폴리오",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "build": "echo '정적 웹사이트이므로 빌드 불필요'",
+    "lint": "echo '린트 설정 준비 중'",
+    "test": "echo '테스트 설정 준비 중'"
+  },
+  "keywords": [
+    "resume",
+    "portfolio",
+    "developer",
+    "웹",
+    "이력서"
+  ],
+  "author": "",
+  "license": "MIT"
+}

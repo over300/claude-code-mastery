@@ -1,0 +1,598 @@
+/* ================================
+   1. CSS 커스텀 프로퍼티 (다크 테마)
+   ================================ */
+:root {
+  /* 배경 계층 */
+  --color-bg-primary:    #0d1117;
+  --color-bg-secondary:  #161b22;
+  --color-bg-card:       #1f2937;
+  --color-bg-overlay:    #21262d;
+
+  /* 텍스트 */
+  --color-text-primary:  #e6edf3;
+  --color-text-secondary:#8b949e;
+  --color-text-muted:    #484f58;
+
+  /* 악센트 (Cyan) */
+  --color-primary:       #00e5cc;
+  --color-primary-dark:  #00b8a3;
+  --color-primary-glow:  rgba(0, 229, 204, 0.15);
+
+  /* 테두리 */
+  --color-border:        rgba(255, 255, 255, 0.08);
+  --color-border-hover:  rgba(0, 229, 204, 0.4);
+
+  /* 상태 색상 */
+  --color-success:       #2ea043;
+  --color-error:         #f85149;
+  --color-error-bg:      rgba(248, 81, 73, 0.1);
+
+  /* 그림자 & 전환 */
+  --shadow-card:         0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover:   0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 229, 204, 0.1);
+  --transition-base:     all 0.3s ease;
+  --border-radius-card:  0.75rem;
+  --header-height:       4rem;
+}
+
+/* ================================
+   2. 전역 기본 스타일
+   ================================ */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
+}
+
+/* prefers-reduced-motion 대응 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* 포커스 스타일 개선 (키보드 접근성) */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ================================
+   3. 네비게이션 스타일
+   ================================ */
+/* 헤더 스크롤 시 그림자 강화 */
+#header.scrolled {
+  background-color: rgba(13, 17, 23, 0.98);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* 활성 네비게이션 링크 */
+.nav-link.active {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* 네비게이션 링크 하단 밑줄 호버 애니메이션 */
+.nav-link {
+  position: relative;
+  text-decoration: none;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--color-primary);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* 모바일 메뉴 슬라이드 애니메이션 */
+#mobile-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+#mobile-menu.open {
+  max-height: 300px;
+}
+
+/* ================================
+   4. 버튼 컴포넌트
+   ================================ */
+/* 주요 버튼 - Cyan 채우기 */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-primary);
+  color: #0d1117;
+  border: 2px solid var(--color-primary);
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition-base);
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 229, 204, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* 아웃라인 버튼 */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition-base);
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-primary-glow);
+  color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+/* 버튼 로딩 상태 */
+.btn-primary.loading,
+.btn-secondary.loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ================================
+   5. 카드 컴포넌트
+   ================================ */
+/* 경험 카드 */
+.experience-card {
+  position: relative;
+  padding: 1.5rem;
+  background: var(--color-bg-card);
+  border-radius: var(--border-radius-card);
+  border: 1px solid var(--color-border);
+  transition: var(--transition-base);
+}
+
+.experience-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+  border-color: var(--color-border-hover);
+}
+
+/* 포트폴리오 카드 */
+.portfolio-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.3s ease;
+}
+
+.portfolio-card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.portfolio-card .card-image {
+  overflow: hidden;
+  position: relative;
+  height: 12rem;
+}
+
+.portfolio-card .card-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 229, 204, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.portfolio-card:hover .card-overlay {
+  opacity: 1;
+}
+
+.portfolio-card .card-body {
+  background: var(--color-bg-card);
+}
+
+/* ================================
+   6. 스킬 배지
+   ================================ */
+.skill-badge {
+  background-color: rgba(0, 229, 204, 0.1);
+  color: var(--color-primary);
+  border: 1px solid rgba(0, 229, 204, 0.2);
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.skill-badge:hover {
+  transform: scale(1.05);
+  background-color: rgba(0, 229, 204, 0.2);
+  border-color: var(--color-primary);
+}
+
+/* ================================
+   7. 폼 컴포넌트
+   ================================ */
+/* 폼 입력 필드 기본 */
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  background-color: var(--color-bg-card);
+  color: var(--color-text-primary);
+  font-family: inherit;
+}
+
+.form-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.form-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-glow);
+}
+
+/* 유효성 검사 상태 */
+.form-input.error {
+  border-color: var(--color-error);
+  background-color: var(--color-error-bg);
+}
+
+.form-input.success {
+  border-color: var(--color-success);
+}
+
+/* 에러 메시지 */
+.error-message {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-error);
+  margin-top: 0.25rem;
+}
+
+.error-message.hidden {
+  display: none;
+}
+
+/* ================================
+   8. 스크롤 등장 애니메이션
+   ================================ */
+.fade-in-element {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in-element.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 순차적 등장 지연 */
+.fade-in-element[data-delay="1"] {
+  transition-delay: 0.1s;
+}
+
+.fade-in-element[data-delay="2"] {
+  transition-delay: 0.2s;
+}
+
+.fade-in-element[data-delay="3"] {
+  transition-delay: 0.3s;
+}
+
+.fade-in-element[data-delay="4"] {
+  transition-delay: 0.4s;
+}
+
+/* ================================
+   9. 키프레임 및 애니메이션
+   ================================ */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.5s ease forwards;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* ================================
+   10. 타임라인 스타일
+   ================================ */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--color-primary),
+    rgba(0, 229, 204, 0.2),
+    transparent
+  );
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.75rem;
+  top: 0.375rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  border: 2px solid var(--color-bg-primary);
+  box-shadow: 0 0 0 2px var(--color-primary), 0 0 8px rgba(0, 229, 204, 0.3);
+}
+
+/* ================================
+   11. SNS 카드
+   ================================ */
+.sns-card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.sns-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ================================
+   12. 스크롤 맨위 버튼
+   ================================ */
+#scroll-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--color-primary);
+  color: #0d1117;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease;
+  z-index: 40;
+  border: none;
+  font-size: 0;
+}
+
+#scroll-top-btn.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#scroll-top-btn:hover {
+  transform: translateY(-3px);
+  background-color: var(--color-primary-dark);
+}
+
+#scroll-top-btn:active {
+  transform: translateY(0);
+}
+
+/* ================================
+   13. 섹션 공통 스타일
+   ================================ */
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 3rem;
+}
+
+.section-header::after {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    var(--color-primary),
+    rgba(0, 229, 204, 0.3)
+  );
+  border-radius: 2px;
+  margin-top: 0.75rem;
+}
+
+/* ================================
+   14. Hero 섹션 스타일
+   ================================ */
+/* Hero 코드 배경 */
+.hero-code-text {
+  position: absolute;
+  top: 50%;
+  right: -2rem;
+  transform: translateY(-50%);
+  font-family: "Courier New", monospace;
+  font-size: 0.8rem;
+  line-height: 1.9;
+  color: rgba(0, 229, 204, 0.055);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  white-space: pre;
+}
+
+/* Floating 기술 배지 */
+.tech-badge-float {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: float 3s ease-in-out infinite;
+  will-change: transform;
+}
+
+.tech-badge-float:nth-child(1) { animation-delay: 0s; }
+.tech-badge-float:nth-child(2) { animation-delay: 0.5s; }
+.tech-badge-float:nth-child(3) { animation-delay: 1s; }
+.tech-badge-float:nth-child(4) { animation-delay: 1.5s; }
+
+.tech-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  box-shadow: 0 0 6px var(--color-primary);
+}
+
+/* 프로필 이미지 컨테이너 */
+.profile-image-container {
+  position: relative;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 2px solid var(--color-border);
+  box-shadow: 0 0 40px rgba(0, 229, 204, 0.08);
+}
+
+.profile-image-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0, 229, 204, 0.12) 100%
+  );
+  pointer-events: none;
+}
+
+/* ================================
+   15. 반응형 조정
+   ================================ */
+@media (max-width: 767px) {
+  :root {
+    --header-height: 3.5rem;
+  }
+
+  .timeline {
+    padding-left: 1.5rem;
+  }
+
+  .timeline::before {
+    left: 0.375rem;
+  }
+
+  .timeline-item::before {
+    left: -1.625rem;
+  }
+
+  #scroll-top-btn {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  /* 모바일에서 floating 배지 숨김 */
+  .tech-badge-float {
+    display: none;
+  }
+}

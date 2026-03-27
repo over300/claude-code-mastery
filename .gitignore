@@ -1,0 +1,41 @@
+# 운영체제
+.DS_Store
+Thumbs.db
+
+# IDE 및 에디터
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+
+# 의존성
+node_modules/
+package-lock.json
+yarn.lock
+
+# 빌드 산출물
+dist/
+build/
+*.min.js
+*.min.css
+
+# 환경 변수
+.env
+.env.local
+.env.*.local
+
+# 로그 파일
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# 임시 파일
+.tmp/
+temp/
+
+# 운영 배포
+.netlify/
+.vercel/
