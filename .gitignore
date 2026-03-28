@@ -39,3 +39,6 @@ temp/
 # 운영 배포
 .netlify/
 .vercel/
+
+# 사용자 설정
+.claude/settings.local.json
